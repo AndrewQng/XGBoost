@@ -58,21 +58,34 @@ def predict_stock_trend() -> None:
     probabilities = model.predict_proba(X_new)[:, 1]
     
     # -------------------------------------------------------------
-    # 4. IN KẾT QUẢ ĐẦU RA (OUTPUT BÁO CÁO)
+    # 4. IN KẾT QUẢ ĐẦU RA (OUTPUT BÁO CÁO) VÀ LƯU FILE TXT
     # -------------------------------------------------------------
     print("=> BÁO CÁO KẾT QUẢ DỰ ĐOÁN XU HƯỚNG TƯƠNG LAI:\n")
-    print(f"{'MÃ CP':<10} | {'DỰ ĐOÁN XU HƯỚNG':<18} | {'ĐỘ TIN CẬY (XÁC SUẤT TĂNG)'}")
-    print("-" * 65)
+    header = f"{'MÃ CP':<10} | {'DỰ ĐOÁN XU HƯỚNG':<18} | {'ĐỘ TIN CẬY (XÁC SUẤT TĂNG)'}"
+    separator = "-" * 65
     
-    for i in range(len(ma_co_phieu)):
-        if predictions[i] == 1:
-            ket_qua = "📈 TĂNG"
-        else:
-            ket_qua = "📉 GIẢM"
-            
-        xac_suat = probabilities[i] * 100
-        print(f"{ma_co_phieu[i]:<10} | {ket_qua:<18} | {xac_suat:.2f}%")
+    print(header)
+    print(separator)
+    
+    result_file = "predict_result.txt"
+    with open(result_file, "w", encoding="utf-8") as f:
+        f.write("BÁO CÁO KẾT QUẢ DỰ ĐOÁN XU HƯỚNG CỔ PHIẾU\n")
+        f.write("=========================================\n\n")
+        f.write(header + "\n")
+        f.write(separator + "\n")
         
+        for i in range(len(ma_co_phieu)):
+            if predictions[i] == 1:
+                ket_qua = "📈 TĂNG"
+            else:
+                ket_qua = "📉 GIẢM"
+                
+            xac_suat = probabilities[i] * 100
+            line = f"{ma_co_phieu[i]:<10} | {ket_qua:<18} | {xac_suat:.2f}%"
+            print(line)
+            f.write(line + "\n")
+            
+    print(f"\n[THÀNH CÔNG] Đã lưu báo cáo kết quả vào file: '{result_file}'")
     print("\n==================================================")
     print("              HOÀN THÀNH DỰ ĐOÁN                  ")
     print("==================================================")
