@@ -72,8 +72,13 @@ def predict_stock_trend() -> None:
     print(header)
     print(separator)
     
+    result_dir = 'results'
+    if not os.path.exists(result_dir):
+        os.makedirs(result_dir)
+        
     model_basename = os.path.basename(model_path).replace('.json', '')
-    result_file = f"predict_result_{model_basename}.txt"
+    result_file = os.path.join(result_dir, f"predict_result_{model_basename}.txt")
+    
     with open(result_file, "w", encoding="utf-8") as f:
         f.write("BÁO CÁO KẾT QUẢ DỰ ĐOÁN XU HƯỚNG CỔ PHIẾU\n")
         f.write("=========================================\n\n")
