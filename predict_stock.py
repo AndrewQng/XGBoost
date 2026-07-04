@@ -1,6 +1,7 @@
 import os
 import sys
 import io
+import glob
 import pandas as pd
 import xgboost as xgb
 
@@ -15,14 +16,18 @@ def predict_stock_trend() -> None:
     print("   PHẦN 2: DỰ ĐOÁN CHỨNG KHOÁN THỰC TẾ (PREDICT)")
     print("==================================================\n")
     
-    model_path = os.path.join('models', 'stock_xgboost_model.json')
-    new_data_file = os.path.join('data', 'stock_new_data.csv')
+    model_dir = 'models'
+    model_files = glob.glob(os.path.join(model_dir, 'stock_xgboost_model*.json'))
     
     # Kiểm tra tính toàn vẹn của file
-    if not os.path.exists(model_path):
-        print(f"[LỖI] Không tìm thấy mô hình đã huấn luyện tại '{model_path}'.")
+    if not model_files:
+        print(f"[LỖI] Không tìm thấy mô hình đã huấn luyện trong thư mục '{model_dir}'.")
         print("Vui lòng chạy 'python train_stock.py' trước để huấn luyện và lưu mô hình.")
         return
+        
+    # Lấy mô hình mới nhất dựa trên thời gian tạo
+    model_path = max(model_files, key=os.path.getctime)
+    new_data_file = os.path.join('data', 'stock_new_data.csv')
         
     if not os.path.exists(new_data_file):
         print(f"[LỖI] Không tìm thấy dữ liệu cần dự đoán tại '{new_data_file}'.")
@@ -67,7 +72,8 @@ def predict_stock_trend() -> None:
     print(header)
     print(separator)
     
-    result_file = "predict_result.txt"
+    model_basename = os.path.basename(model_path).replace('.json', '')
+    result_file = f"predict_result_{model_basename}.txt"
     with open(result_file, "w", encoding="utf-8") as f:
         f.write("BÁO CÁO KẾT QUẢ DỰ ĐOÁN XU HƯỚNG CỔ PHIẾU\n")
         f.write("=========================================\n\n")

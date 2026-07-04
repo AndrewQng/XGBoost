@@ -1,6 +1,7 @@
 import os
 import sys
 import io
+import datetime
 import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
@@ -20,7 +21,10 @@ def train_xgboost_model() -> None:
     
     data_file = os.path.join('data', 'stock_train_data.csv')
     model_dir = 'models'
-    model_path = os.path.join(model_dir, 'stock_xgboost_model.json')
+    
+    # Tạo tên model kèm theo thời gian để không bị đè file cũ
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_path = os.path.join(model_dir, f'stock_xgboost_model_{timestamp}.json')
     
     if not os.path.exists(data_file):
         print(f"[LỖI] Không tìm thấy dữ liệu tại: '{data_file}'")
