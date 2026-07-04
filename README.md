@@ -1,4 +1,4 @@
-# Đồ Án: Ứng dụng Học máy XGBoost Dự đoán Xu hướng Chứng Khoán
+# Ứng dụng Học máy XGBoost Dự đoán Xu hướng Chứng Khoán
 
 Dự án này là một nguyên mẫu (prototype) mô phỏng việc sử dụng thuật toán **XGBoost Classifier** trong Machine Learning để dự đoán xu hướng giá cổ phiếu (Tăng/Giảm) thông qua phân tích dữ liệu lịch sử và các chỉ báo kỹ thuật cơ bản.
 
